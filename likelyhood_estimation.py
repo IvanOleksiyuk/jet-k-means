@@ -30,28 +30,31 @@ def infinity_to_min_max(bg_scores, sg_scores, tr_scores):
         tr_scores[tr_scores==np.NINF]=min_score*1.1
 
 def estimate_dim_uniform_point(dist_tr, cluster_i, r_i, c=1.1):
-    dists=dist_tr[:, cluster_i]
-    N_1=np.sum([dists<=r_i])
-    N_2=np.sum([dists<=r_i*c])
-    dim=np.log(N_2/N_1)/np.log(c)
-    return dim 
+    """
+
+    Parameters
+    ----------
+    dist_tr : np.array
+        Array of the distances of training points to the cluster centres
+    cluster_i : int
+        Index of a cluster
+    r_i : float
+        distance to the cluster at whicj to find d(r)
+    c : float, optional
+        step size. The default is 1.1.
+
+    Returns
+    -------
+    dim : float
+        effective dimensionality of the dataset at scale r_i looking from the centre of cluster_i.
+        See paper for formula
+    """
     
-def estiamte_dim_uniform(dist_tr, cluster_i, r_i, c=1.1, plotting=False):
-    dists=dist_tr[:, cluster_i]
-    min_d=np.min(dists)
-    max_d=np.max(dists) 
-    c_plot=1.01    
-    r_arr=min_d*c_plot**np.arange(0, (int)(np.floor(np.log(max_d/(min_d+10**-10))/np.log(c_plot)))+3)
-    dims=[]
-    for r in r_arr:
-        dims.append(estimate_dim_uniform_point(dist_tr, cluster_i, r, c=1.1))
-    dims=np.array(dims)
-    if plotting:
-        ax=plt.gca()
-        vline_color = next(ax._get_lines.prop_cycler)['color']
-        plt.plot(r_arr, dims, c=vline_color)
-        plt.axvline(r_i, color=vline_color)
-    return estimate_dim_uniform_point(dist_tr, cluster_i, r_i, c=1.1)
+    dists=dist_tr[:, cluster_i] #take distances of all points to a given cluster centre
+    N_1=np.sum([dists<=r_i]) #find the number of points inside the ball of radius r_i
+    N_2=np.sum([dists<=r_i*c]) #find the number of points inside the ball of radius r_i*c
+    dim=np.log(N_2/N_1)/np.log(c) #calcualte the effective dimensionality as discussed in the paper
+    return dim 
 
 def likelyhood_estimation_dim_Uniform(kmeans, crop, k, X_tr, X_bg_val, X_sg_val, density_function, log_likelyhood=True, res=None, plot_dim=True, d=None):
     
@@ -60,16 +63,6 @@ def likelyhood_estimation_dim_Uniform(kmeans, crop, k, X_tr, X_bg_val, X_sg_val,
     dist_bg_val = kmeans.transform(X_bg_val)
     dist_sg_val = kmeans.transform(X_sg_val)
     
-    #initialise a plot for illustrating the dimension estimation for clusters
-    if plot_dim:
-        matplotlib.rcParams.update({'font.size': 14})
-        plt.figure(figsize=(8, 5))
-        plt.xlabel("$R$")
-        plt.xscale("log")
-        plt.ylabel("$d_i(R)$")
-        axs=plt.gca()
-        axs.grid( which='both', alpha=0.5 )
-        
     means=[]    #list of rho_i of the clusters
     sigmas=[]   #list of sigma_i of the clusters
     weights=[]  #list of N_i/N_tot of the clusters
@@ -80,13 +73,30 @@ def likelyhood_estimation_dim_Uniform(kmeans, crop, k, X_tr, X_bg_val, X_sg_val,
         sigmas.append(np.std(dist))  #calculate sigma_i
         weights.append(len(dist)/crop) #calculate N_i/N_tot
         if d==None: #If d is not set by user find the effective dimensions d_i for each cluster
-            if plot_dim:
-                if i<5:
-                    dims.append(estiamte_dim_uniform(dist_tr, i, means[-1], c=1.1, plotting=True))
-                else:
-                    dims.append(estiamte_dim_uniform(dist_tr, i, means[-1], c=1.1))
-            else:
-                dims.append(estiamte_dim_uniform(dist_tr, i, means[-1], c=1.1))
+            dims.append(estimate_dim_uniform_point(dist_tr, i, means[-1], c=1.1))
+    
+    #plot for illustrating the dimension estimation for clusters
+    if plot_dim and d==None:
+        matplotlib.rcParams.update({'font.size': 14})
+        plt.figure(figsize=(8, 5))
+        plt.xlabel("$R$")
+        plt.xscale("log")
+        plt.ylabel("$d_i(R)$")
+        axs=plt.gca()
+        axs.grid( which='both', alpha=0.5 )
+        c_plot=1.01
+        for cluster_i in [0, 1, 2, 3, 4]:
+            dists=dist_tr[:, cluster_i]
+            min_d=np.min(dists)
+            max_d=np.max(dists) 
+            r_arr=min_d*c_plot**np.arange(0, (int)(np.floor(np.log(max_d/(min_d+10**-10))/np.log(c_plot)))+3)
+            dims=[]
+            for r in r_arr:
+                dims.append(estimate_dim_uniform_point(dist_tr, cluster_i, r, c=1.1))
+            dims=np.array(dims)
+            vline_color = next(axs._get_lines.prop_cycler)['color']
+            plt.plot(r_arr, dims, c=vline_color)
+            plt.axvline(means[cluster_i], color=vline_color)
     
     #Transform lists into arrays
     means=np.array(means)

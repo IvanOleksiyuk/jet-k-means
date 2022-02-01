@@ -28,7 +28,7 @@ cont=0
 SIGMA=3
 train_mode="d"
 
-for SCORE_TYPE in SCORE_TYPE_list:
+for SCORE_TYPE in ["logLrh0"]: #SCORE_TYPE_list:
 
     for i in range(len(dataset_list)):
         k_means_process(dataset=dataset_list[i],

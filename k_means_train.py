@@ -253,7 +253,7 @@ def k_means_process(dataset, #index/name of the dataset
             path="char/{:}+{:}m{:}s{:}c{:}r{:}KI{:}{:}{:}/".format(DI["pref"], DI["pref2"], k_clusters, SIGMA, crop//1000, reprocessing.reproc_names(preproc), train_mode, Id, postf)
             os.makedirs(path, exist_ok=True)
             k=0
-            if plot_dim and (SCORE_TYPE in ["logLds", "logLmdui"]):
+            if plot_dim and (SCORE_TYPE in ["logLds"]):
                 k+=1
                 plt.figure(k)
                 plt.savefig(path+"dimensions.png", bbox_inches="tight")
@@ -272,9 +272,6 @@ def k_means_process(dataset, #index/name of the dataset
             k+=1
             plt.figure(k)
             plt.savefig(path+"SIC.png", bbox_inches="tight")
-            k+=1
-            plt.figure(k)
-            plt.savefig(path+"clusters.png", bbox_inches="tight")
         
             res["fpr"]=fpr
             res["tpr"]=tpr
@@ -283,7 +280,6 @@ def k_means_process(dataset, #index/name of the dataset
             print(path+"res.pickle")
         if return_data:
             return X_tr
-
     
 if __name__ == "__main__":
     print("test_run")

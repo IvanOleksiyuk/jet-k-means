@@ -1,5 +1,5 @@
 # jet-k-means
-k-means and clustering algorythms for anomalous jet tagging 
+k-means and MoG (GMM) algorythms for anomalous jet tagging 
 
 How to use:
 1. The jet images used for this code were produced by the algorythm in a different repository please refere to it or create your own jet images using  "preprocessing.py".
@@ -9,7 +9,13 @@ How to use:
 4. If the path to the datasets is given correctly script "full_run.py" will produce all the plots and a table given in k-menas chapter
 5. k_means_process and MoG_process can be used with any other available parameters and datasets from dataset_path_and_pref.py at wish
 
-code by Ivan Oleksiyuk
+The code is not fully commented and documented yet. It can also still be improved and simplified somewhat:
+possible impreovements:
+. Add function descriptions (Google style?)
+. Change variable/function names for clarity and consistency
+. refactor some code parts to make them more efficient logical
+. deal with a huge number of input variables to many functions
 
-Ref: 
+code by:
+Ivan Oleksiyuk
 

@@ -27,7 +27,7 @@ k_clusters=100
 cont=0
 SIGMA=3
 train_mode="d"
-"""
+
 for SCORE_TYPE in SCORE_TYPE_list:
 
     for i in range(len(dataset_list)):
@@ -47,7 +47,6 @@ for SCORE_TYPE in SCORE_TYPE_list:
                          SCORE_TYPE=SCORE_TYPE,
                          MINI_BATCH=False,
                          plot_dim=True)
-"""
 
 k_means_process(dataset=8.1,
             k_clusters=100,
@@ -78,7 +77,7 @@ k_means_process(dataset=8.1,
             data=None,
             plot_dim=True,
             density="Gaussianlog")
-"""
+
 #%% run all GMM evaluations
 train_mode="bl"
 reg_covar=-11
@@ -96,7 +95,7 @@ for i in range(len(dataset_list)):
                             SAVE_CHAR=True, 
                             train_mode=train_mode, 
                             data=None)
-"""
+
 #%% produce all ROC plots 
 box_labels=["direct top\n tagging", "reverse top\n tagging",  "Aachen $\sqrt[4]{p_T}$", "Aachen",  "Heidelberg $\sqrt[4]{p_T}$", "Heidelberg"]
 i=0

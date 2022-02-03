@@ -111,7 +111,8 @@ if DATASET==8:
     Y[:, 0]=(R+r)*np.sin(phi)
     Y[:, 1]=(R+r)*np.cos(phi)
     X=np.random.normal(loc=(0, 0), scale=(1, 1), size=(num_tot, 2))
-    
+
+# the dataset used in paper for the MinD and KNC5 testing 
 if DATASET==8.1:
     bg_name="5d1s"
     sg_name="tor5d4u1s" 

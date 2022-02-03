@@ -176,3 +176,6 @@ def likelyhood_estimation_dim_Uniform(kmeans, crop, k, X_tr, X_bg_val, X_sg_val,
         tr_scores = tr_L
     #Both scores give the same tagging results as they are connected by a monotonic log function
     return tr_scores, bg_scores, sg_scores, tr_losses, bg_losses, sg_losses
+
+def likelyhood_estimation(kmeans, crop, k, X_tr, X_bg_val, X_sg_val, density_function, log_likelyhood=True, res=None, plot_dim=True):
+    return likelyhood_estimation_dim_Uniform(kmeans, crop, k, X_tr, X_bg_val, X_sg_val, density_function, log_likelyhood=True, res=None, plot_dim=True, d=None)

@@ -34,7 +34,6 @@ def d_slopes_norm(x, mean, sigma, weight, d=1, dont_use_weights=False, dont_use_
     else:
         return out*weight
     
-
 def mean_knc_mins(dists, knc):
     dists_cop=np.copy(dists)
     dists_cop.sort(1)

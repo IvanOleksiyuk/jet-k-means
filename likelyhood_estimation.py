@@ -74,7 +74,7 @@ def likelyhood_estimation_dim_Uniform(kmeans, crop, k, X_tr, X_bg_val, X_sg_val,
         weights.append(len(dist)/crop) #calculate N_i/N_tot
         if d==None: #If d is not set by user find the effective dimensions d_i for each cluster
             dims.append(estimate_dim_uniform_point(dist_tr, i, means[-1], c=1.1))
-    
+
     #plot for illustrating the dimension estimation for clusters
     if plot_dim and d==None:
         matplotlib.rcParams.update({'font.size': 14})
@@ -90,14 +90,14 @@ def likelyhood_estimation_dim_Uniform(kmeans, crop, k, X_tr, X_bg_val, X_sg_val,
             min_d=np.min(dists)
             max_d=np.max(dists) 
             r_arr=min_d*c_plot**np.arange(0, (int)(np.floor(np.log(max_d/(min_d+10**-10))/np.log(c_plot)))+3)
-            dims=[]
+            dim_arr=[]
             for r in r_arr:
-                dims.append(estimate_dim_uniform_point(dist_tr, cluster_i, r, c=1.1))
-            dims=np.array(dims)
+                dim_arr.append(estimate_dim_uniform_point(dist_tr, cluster_i, r, c=1.1))
+            dim_arr=np.array(dim_arr)
             vline_color = next(axs._get_lines.prop_cycler)['color']
-            plt.plot(r_arr, dims, c=vline_color)
+            plt.plot(r_arr, dim_arr, c=vline_color)
             plt.axvline(means[cluster_i], color=vline_color)
-    
+
     #Transform lists into arrays
     means=np.array(means)
     sigmas=np.array(sigmas)
@@ -116,6 +116,7 @@ def likelyhood_estimation_dim_Uniform(kmeans, crop, k, X_tr, X_bg_val, X_sg_val,
         d=np.median(dims) #If d is not set by user find the effective dimension d for the dataset        
     print("d=", d)
     
+
     # Some tests 
     # TODO: delete this part
     N_0=d_ball_volume(d, means) #O((sigma/mean)^0)

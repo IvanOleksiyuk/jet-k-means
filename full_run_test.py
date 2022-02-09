@@ -28,7 +28,7 @@ cont=0
 SIGMA=3
 train_mode="d"
 
-for SCORE_TYPE in ["logLrh0"]: #SCORE_TYPE_list:
+for SCORE_TYPE in ["logLds"]: #SCORE_TYPE_list:
 
     for i in range(len(dataset_list)):
         k_means_process(dataset=dataset_list[i],
@@ -49,6 +49,7 @@ for SCORE_TYPE in ["logLrh0"]: #SCORE_TYPE_list:
                          plot_dim=True)
 
 
+"""
 #%% run k-means based training and evaluations on 5dim gaussian dataset
 k_means_process(dataset=8.1,
             k_clusters=100,
@@ -97,7 +98,7 @@ for i in range(len(dataset_list)):
                             SAVE_CHAR=True, 
                             train_mode=train_mode, 
                             data=None)
-
+"""
 #%% produce all ROC plots 
 box_labels=["direct top\n tagging", "reverse top\n tagging",  "Aachen $\sqrt[4]{p_T}$", "Aachen",  "Heidelberg $\sqrt[4]{p_T}$", "Heidelberg"]
 i=0
